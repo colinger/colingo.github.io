@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spring,spring mvc," />
+  <meta name="keywords" content="java,io,nio," />
 
 
 
@@ -84,19 +84,34 @@
 
 
 
-<meta name="description" content="一次比较有意思的错误定位
-在一个项目中，本地API访问正常，部署到server上后，发现有些API正常返回的是JSON，同一个类中不同的API，返回的却是XXX.jsp页面没有找到。">
+<meta name="description" content="Buffer handling
+Kernel space VS user space
+Virtual memory
+Paging
+File-oriented VS Stream I/O
+Multiplexed I/O (readiness selection)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring MVC Response Error">
-<meta property="og:url" content="http://colinger.github.io/2016/12/11/Spring-MVC-Response-Error/index.html">
+<meta property="og:title" content="java nio">
+<meta property="og:url" content="http://colinger.github.io/2016/12/17/java-nio/index.html">
 <meta property="og:site_name" content="Colingo的博客">
-<meta property="og:description" content="一次比较有意思的错误定位
-在一个项目中，本地API访问正常，部署到server上后，发现有些API正常返回的是JSON，同一个类中不同的API，返回的却是XXX.jsp页面没有找到。">
-<meta property="og:updated_time" content="2016-12-11T15:40:02.000Z">
+<meta property="og:description" content="Buffer handling
+Kernel space VS user space
+Virtual memory
+Paging
+File-oriented VS Stream I/O
+Multiplexed I/O (readiness selection)">
+<meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/buffer_handling.png">
+<meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/virtual_memory.png">
+<meta property="og:updated_time" content="2016-12-17T10:14:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring MVC Response Error">
-<meta name="twitter:description" content="一次比较有意思的错误定位
-在一个项目中，本地API访问正常，部署到server上后，发现有些API正常返回的是JSON，同一个类中不同的API，返回的却是XXX.jsp页面没有找到。">
+<meta name="twitter:title" content="java nio">
+<meta name="twitter:description" content="Buffer handling
+Kernel space VS user space
+Virtual memory
+Paging
+File-oriented VS Stream I/O
+Multiplexed I/O (readiness selection)">
+<meta name="twitter:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/buffer_handling.png">
 
 
 
@@ -124,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="http://colinger.github.io/2016/12/11/Spring-MVC-Response-Error/"/>
+  <link rel="canonical" href="http://colinger.github.io/2016/12/17/java-nio/"/>
 
 
 
 
 
-  <title> Spring MVC Response Error | Colingo的博客 </title>
+  <title> java nio | Colingo的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -261,7 +276,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://colinger.github.io/2016/12/11/Spring-MVC-Response-Error/">
+  <link itemprop="mainEntityOfPage" href="http://colinger.github.io/2016/12/17/java-nio/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="colinger">
@@ -285,7 +300,7 @@
             
             
               
-                Spring MVC Response Error
+                java nio
               
             
           </h1>
@@ -298,8 +313,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T23:35:53+08:00">
-                2016-12-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-17T09:01:54+08:00">
+                2016-12-17
               </time>
             
 
@@ -317,8 +332,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring/" itemprop="url" rel="index">
-                    <span itemprop="name">spring</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -352,10 +367,43 @@
       
 
       
-        <h4 id="一次比较有意思的错误定位"><a href="#一次比较有意思的错误定位" class="headerlink" title="一次比较有意思的错误定位"></a>一次比较有意思的错误定位</h4><blockquote>
-<p>在一个项目中，本地API访问正常，部署到server上后，发现有些API正常返回的是JSON，同一个类中不同的API，返回的却是XXX.jsp页面没有找到。</p>
-</blockquote>
+        <ul>
+<li>Buffer handling</li>
+<li>Kernel space VS user space</li>
+<li>Virtual memory</li>
+<li>Paging</li>
+<li>File-oriented VS Stream I/O</li>
+<li>Multiplexed I/O (readiness selection)</li>
+</ul>
 <a id="more"></a>
+<h3 id="Buffer-Handling"><a href="#Buffer-Handling" class="headerlink" title="Buffer Handling"></a>Buffer Handling</h3><p>Buffers, 所有I/O的基础是：Buffers是怎么被处理的。所谓的“input/output”就是指将数据<strong><big>移进</big></strong>和<strong><big>移出</big></strong><font color="red">Buffers</font>.</p>
+<p>进程是通过OS来操作I/O，<big>写</big>（将buffer中的数据排干）或者<big>读</big>（将buffer填满）。</p>
+<h4 id="简化的I-O-buffer-handling"><a href="#简化的I-O-buffer-handling" class="headerlink" title="简化的I/O buffer handling"></a>简化的I/O buffer handling</h4><img [extend="?imageView2/2/w/600" src="http://oib3nhty8.bkt.clouddn.com/static/images/buffer_handling.png">
+<blockquote>
+<p>上图展示数据从磁盘到进程的内存的过程（实际比这个要复杂）。<br>进程通过OS的read()来填充自己的buffer。这一请求会促使kernel发送一个命令给Disk controller硬件，让其从磁盘上获取这块数据。Disk controller通过DMA直接把数据写进kernel内存buffer（此过程不需要CPU协助）。一旦disk controller将数据填充到kernel的buffer中，kernel会将这块数据从kernel的buffer中copy到进程的buffer中。</p>
+</blockquote>
+<p>进程的活动空间在 <strong><big>User space</big></strong>中。JVM是User space中一个常规进程。 User space不是一个特权区域：比如，在这里运行的代码不能直接访问硬件设备。而<big><strong>Kernel space</strong></big>是操作系统活动区域。Kernel code有特权：比如，它可以与设备控制器(device controller)交互，可以操控User Space中进程的状态。最重的要是，所有I/O都直接或间接的流经kernel space。</p>
+<p>当一个进程有I/O操作时，它会执行一个<small>系统调用</small>，底层是:<em>open(), read(), write(), 和close()函数</em>。 当kenerl以此种方式被调用时，它将竭尽全力去寻找进程请求的数据，将其传输到user space的buffer。 Kernel会尝试cache 或 prefetch数据，因此进程请求的数据有可能是已经在kernel space中了。如果已存在了，直接copy出去；如果不存在，当kernel去将数据拿到自己的内存空间时时候，进程会被暂停。</p>
+<p>从上图看，可能会问，什么不直接让 disk controller将数据直接发送到 user space的buffer中呢，非得经过kernel？如果真如此，那会存在一些问题（还有其他问题）：</p>
+<ul>
+<li>user space无法直接访问硬件</li>
+<li>面向块的硬件设备，如disk controller 只会操作固定大小的数据块。user space可能请求一个奇数大小或不对齐的数据块。</li>
+</ul>
+<p>Kernel所扮演的中介的角色，将打碎然后重组数据在user space和储存设备之间移动。</p>
+<h3 id="Virtual-Memory"><a href="#Virtual-Memory" class="headerlink" title="Virtual Memory"></a>Virtual Memory</h3><p>现代的操作系统都使用虚拟内存这一技术。虚拟内存就是使用人工或虚拟的地址来代替物理存储地址（硬件RAM）。有什么好处呢？</p>
+<ul>
+<li>多个虚拟地址可以引用同一个块物理地址</li>
+<li>虚拟内存空间可远远大于真实的硬件内存空间。</li>
+</ul>
+<p>在Buffer handling中所说的，设备控制器不能直接DMA到user space。这个问题可以通过上面第一次的好处得以解决。将user space中的一个虚拟地址和一块kernel space地址映射到同一块物理地址上。这样，DMA硬件可以填充一块对kernel可见，同时对 user space中进程可见的buffer。看下图：</p>
+<img [extend="?imageView2/2/w/600" src="http://oib3nhty8.bkt.clouddn.com/static/images/virtual_memory.png">
+<p>这样就避免了在kernel与user space之间copy数据，但是，这样要求kernel和user buffers 必须共享page alignment（页面对齐）。Buffers的大小也必须是磁盘控制机所使用块的倍数（磁盘扇区：512字节）。<br>Page是什么：操作系统将其内存地址空间划分为很多固定大小的字节组，这些组就是Page。这些内存page通常都是磁盘块大小的倍数，通常是2的幂次方。一般内存page的为像1024，2048，4096字节大小。虚拟和物理内存的memory page 通常也是这样的大小。</p>
+<h3 id="Memory-Paging"><a href="#Memory-Paging" class="headerlink" title="Memory Paging"></a>Memory Paging</h3><p>将内存页面大小对齐为磁盘块大小的倍数,Kernel就可以直接向磁盘控制器硬件发出命令：将内存page写入磁盘或在需要时重新加载它们。事实证明，所有磁盘I/O都是在页面级别完成的。 这是在现代分页操作系统中数据在磁盘和物理内存之间移动的唯一方式。</p>
+<h3 id="File-I-O"><a href="#File-I-O" class="headerlink" title="File I/O"></a>File I/O</h3><p>File I/O发生在文件系统的上下文中。文件系统与Disk又不一橛。磁盘将数据存在扇区上，一个扇区的大小通常为512字节，硬件设备对文件的语义一无所知。它们只是简单的提供一些槽点用来存放数据。从这个角度来看，磁盘的扇区就像内存page；所有都是统一大小的，可寻址的大数组。</p>
+<p>文件系统是高层次的抽象，文件系统决定如何将数据存储在磁盘上。通常我们写代码主要是和文件系统打交道，而不是磁盘。文件系统定义了像file name， path， files， file attribute等抽象。</p>
+<p>文件系统组织同一大小数据块的序列。有些数据块存放meta信息比如：目录，索引。其他数据块包含文件数据。单独文件的meta信息描述哪些blocks包含文件数据，数据在哪里结束，最后一次更新是什么时间，等等。</p>
+<p>当用户进程请求一个文件时，文件系统会明确知道这些数据存放在磁盘的哪些位置。然后它会将这些磁盘扇区弄到内存中去。</p>
+<h3 id="Stream-I-O"><a href="#Stream-I-O" class="headerlink" title="Stream I/O"></a>Stream I/O</h3><p>并不所有I/O都像前面所描述：block-oriented。Stream I/O不是，它模型是基于pipeline的。 I/O Stream的字节必须被连续访问。<br>Stream通常来说比块设备慢，但也不是绝对的。大多数OS允许Stream为非阻塞模式。里程在检查Stream的输入是否可用时，不会被卡住（阻塞）。这样，进程在没有输入进来时，可以做别的事。<br>抛开非阻塞模式来看，也就是有能力做readiness selection（准备选择）。这个和非阻塞模式很像，不同的是，检查Stream是否准备好不再由操作系统来做。操作系统被用来watch一组Stream，然后标识出哪些Stream已经准备好了。这样，进程可以通过这点，使用单线程利用多个active Stream。</p>
 
       
     </div>
@@ -379,9 +427,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spring/" rel="tag"># spring</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
-            <a href="/tags/spring-mvc/" rel="tag"># spring mvc</a>
+            <a href="/tags/io/" rel="tag"># io</a>
+          
+            <a href="/tags/nio/" rel="tag"># nio</a>
           
         </div>
       
@@ -390,8 +440,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/10/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2016/12/11/Spring-MVC-Response-Error/" rel="next" title="Spring MVC Response Error">
+                <i class="fa fa-chevron-left"></i> Spring MVC Response Error
               </a>
             
           </div>
@@ -399,10 +449,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/17/java-nio/" rel="prev" title="java nio">
-                java nio <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -522,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一次比较有意思的错误定位"><span class="nav-number">1.</span> <span class="nav-text">一次比较有意思的错误定位</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer-Handling"><span class="nav-number">1.</span> <span class="nav-text">Buffer Handling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简化的I-O-buffer-handling"><span class="nav-number">1.1.</span> <span class="nav-text">简化的I/O buffer handling</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Virtual-Memory"><span class="nav-number">2.</span> <span class="nav-text">Virtual Memory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory-Paging"><span class="nav-number">3.</span> <span class="nav-text">Memory Paging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-I-O"><span class="nav-number">4.</span> <span class="nav-text">File I/O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream-I-O"><span class="nav-number">5.</span> <span class="nav-text">Stream I/O</span></a></li></ol></div>
             
 
           </div>
