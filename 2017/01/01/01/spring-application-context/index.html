@@ -1,0 +1,75 @@
+<hr>
+<p>title: spring application context<br>date: 2017-01-01 20:55:17<br>categories: [“java”，“spring”，“context”]</p>
+<h2 id="tags-“spring”-“spring-mvc”"><a href="#tags-“spring”-“spring-mvc”" class="headerlink" title="tags: [“spring”, “spring mvc”]"></a>tags: [“spring”, “spring mvc”]</h2><p>Spring，Spring mvc做java web开发可能天天都会接触，但有些概念很多开发人员不太清楚，比如今天说的上下文：WebApplicationContext与ApplicationContext一样吗，有什么不一样？今天详细来介绍一下。</p>
+<p>一个标准的Spring Web项目，会在web.xml中包含‘ContextLoadListener’和‘DispatcherServlet’。ContextLoaderListener用来加载与Web无关的Bean，DispatcherServlet是用来用加载Web相关的Bean（如Controller）。这样就会有两个Context：一个Parent（ContextLoaderListener创建的Root WebApplicationContext），一个Child（DispatcherServlet创建的 WebApplicationContext 其 parent为Root WebApplicationContext）。</p>
+<!-- more -->
+<h3 id="WebApplicationContext是什么"><a href="#WebApplicationContext是什么" class="headerlink" title="WebApplicationContext是什么"></a>WebApplicationContext是什么</h3><p>ApplicationContext是Spring的核心，Context通常翻译为上下文，也可以用“容器”来理解。在Web应用中，会用到WebApplicationContext，从名字可以看出，应该是继承于ApplicationContext。WebApplicationContext与BeanFactory初始化方式有所不同，因为WebApplicationContext需要Servlet实例，也就是说它必须拥有Web容器才能完成启动工作。<br>一般情况下，我们使用Spring MVC，在web.xml我们会配置一个ContextLoaderListener，看一下ContextLoaderListener的继承结构，可以发现，它实现了SerletContextListener接口。</p>
+<p>{% qnimg context_loader_listener.png [extend:?imageView2/2/w/600 | normal:yes] %}</p>
+<p>Tomcat启动，ServletContext实例化之后会调用ServletContextListener#contextIntialized()(这里的监听器是ContextLoaderListener)。调用ContextLoader#initWebApplicationContext().Spring，defaultStrategies中默认配置WebApplicationContext的实现是XmlWebApplicationContext。</p>
+<blockquote>
+<p>这里需要注意的，在配置web.xml中，会配置contextConfigLocation，此参数就是在ContextLoader中使用的。根据这个配置参数的内容来构建ApplicationContext,类似下面代码:</p>
+</blockquote>
+<pre><code>&lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;
+            /WEB-INF/applicationContext*.xml
+        &lt;/param-value&gt;
+&lt;/context-param&gt;
+</code></pre><p>XmlWebApplicationContext实例化完成后，调用AbstractApplicationContext#refresh()方法进行剩余工作的处理(template method)。</p>
+<pre><code>public void refresh() throws BeansException, IllegalStateException {
+        synchronized (this.startupShutdownMonitor) {
+            // Prepare this context for refreshing.
+            prepareRefresh();
+
+            // Tell the subclass to refresh the internal bean factory.
+            ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+            // Prepare the bean factory for use in this context.
+            prepareBeanFactory(beanFactory);
+
+            try {
+                // Allows post-processing of the bean factory in context subclasses.
+                postProcessBeanFactory(beanFactory);
+
+                // Invoke factory processors registered as beans in the context.
+                invokeBeanFactoryPostProcessors(beanFactory);
+
+                // Register bean processors that intercept bean creation.
+                registerBeanPostProcessors(beanFactory);
+
+                // Initialize message source for this context.
+                initMessageSource();
+
+                // Initialize event multicaster for this context.
+                initApplicationEventMulticaster();
+
+                // Initialize other special beans in specific context subclasses.
+                onRefresh();
+
+                // Check for listener beans and register them.
+                registerListeners();
+
+                // Instantiate all remaining (non-lazy-init) singletons.
+                finishBeanFactoryInitialization(beanFactory);
+
+                // Last step: publish corresponding event.
+                finishRefresh();
+            }catch (BeansException ex) {
+                logger.warn(&quot;Exception encountered during context initialization - cancelling refresh attempt&quot;, ex);
+
+                // Destroy already created singletons to avoid dangling resources.
+                destroyBeans();
+
+                // Reset &apos;active&apos; flag.
+                cancelRefresh(ex);
+
+                // Propagate exception to caller.
+                throw ex;
+            }
+        }
+    }
+</code></pre><p>在refresh（）里最后一行代码：finishRefresh()，在这里：</p>
+<pre><code>publishEvent(new ContextRefreshedEvent(this));
+</code></pre><p>此事件的发布，会触发所有ApplicationListener监听器,从布引发DispatchServlet初始化自己的上下文(WebApplicationContext).看一DispatchServlet的结构：</p>
+<p>{% qnimg context_loader_listener_01.png [extend:?imageView2/2/w/600 | normal:yes] %}</p>
+<p>DispatchServlet#initServletBean创建Servlet的ApplicationContext（XmlWebApplicationContext），并设定其Parent为ContextLoaderListener中创建的Root WebApplicationContext。而且Servlet的applicationContext“容器“中存放的Bean来自于spring-servlet.xml.</p>
