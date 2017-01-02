@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Java, Elixir" />
+  <meta name="keywords" content="java,spring,applicationContext," />
 
 
 
@@ -84,13 +84,22 @@
 
 
 
+<meta name="description" content="Spring，Spring mvc做java web开发可能天天都会接触，但有些概念很多开发人员不太清楚，比如今天说的上下文：ContextLoaderListener有一个上下文，spring-servlet.xml也有一个上下文，它们一样吗，有什么不一样？今天详细来介绍一下。
+一个标准的Spring Web项目，会在web.xml中包含‘ContextLoadListener’和‘Dispat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring ApplicationContext">
 <meta property="og:url" content="http://colinger.github.io/2017/01/02/Spring-ApplicationContext/index.html">
 <meta property="og:site_name" content="Colingo的博客">
-<meta property="og:updated_time" content="2017-01-02T03:02:13.000Z">
+<meta property="og:description" content="Spring，Spring mvc做java web开发可能天天都会接触，但有些概念很多开发人员不太清楚，比如今天说的上下文：ContextLoaderListener有一个上下文，spring-servlet.xml也有一个上下文，它们一样吗，有什么不一样？今天详细来介绍一下。
+一个标准的Spring Web项目，会在web.xml中包含‘ContextLoadListener’和‘Dispat">
+<meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/context_loader_listener.png">
+<meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/context_loader_listener_01.png">
+<meta property="og:updated_time" content="2017-01-02T09:02:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring ApplicationContext">
+<meta name="twitter:description" content="Spring，Spring mvc做java web开发可能天天都会接触，但有些概念很多开发人员不太清楚，比如今天说的上下文：ContextLoaderListener有一个上下文，spring-servlet.xml也有一个上下文，它们一样吗，有什么不一样？今天详细来介绍一下。
+一个标准的Spring Web项目，会在web.xml中包含‘ContextLoadListener’和‘Dispat">
+<meta name="twitter:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/context_loader_listener.png">
 
 
 
@@ -303,6 +312,35 @@
           </span>
 
           
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/context/" itemprop="url" rel="index">
+                    <span itemprop="name">context</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -328,7 +366,24 @@
       
 
       
-        
+        <p>Spring，Spring mvc做java web开发可能天天都会接触，但有些概念很多开发人员不太清楚，比如今天说的上下文：ContextLoaderListener有一个上下文，spring-servlet.xml也有一个上下文，它们一样吗，有什么不一样？今天详细来介绍一下。</p>
+<p>一个标准的Spring Web项目，会在web.xml中包含‘ContextLoadListener’和‘DispatcherServlet’。ContextLoaderListener用来加载与Web无关的Bean，DispatcherServlet是用来用加载Web相关的Bean（如Controller）。这样就会有两个Context：一个Parent（ContextLoaderListener创建的Root WebApplicationContext），一个Child（DispatcherServlet创建的 WebApplicationContext 其 parent为Root WebApplicationContext）。</p>
+<a id="more"></a>
+<h3 id="WebApplicationContext是什么"><a href="#WebApplicationContext是什么" class="headerlink" title="WebApplicationContext是什么"></a>WebApplicationContext是什么</h3><p>ApplicationContext是Spring的核心，Context通常翻译为上下文，也可以用“容器”来理解。在Web应用中，会用到WebApplicationContext，从名字可以看出，应该是继承于ApplicationContext。WebApplicationContext与BeanFactory初始化方式有所不同，因为WebApplicationContext需要Servlet实例，也就是说它必须拥有Web容器才能完成启动工作。<br>一般情况下，我们使用Spring MVC，在web.xml我们会配置一个ContextLoaderListener，看一下ContextLoaderListener的继承结构，可以发现，它实现了SerletContextListener接口。</p>
+<img [extend="?imageView2/2/w/600" src="http://oib3nhty8.bkt.clouddn.com/static/images/context_loader_listener.png">
+<p>Tomcat启动，ServletContext实例化之后会调用ServletContextListener#contextIntialized()(这里的监听器是ContextLoaderListener)。调用ContextLoader#initWebApplicationContext().Spring，defaultStrategies中默认配置WebApplicationContext的实现是XmlWebApplicationContext。</p>
+<blockquote>
+<p>这里需要注意的，在配置web.xml中，会配置contextConfigLocation，此参数就是在ContextLoader中使用的。根据这个配置参数的内容来构建ApplicationContext,类似下面代码:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;context-param&gt;</div><div class="line">        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</div><div class="line">        &lt;param-value&gt;</div><div class="line">            /WEB-INF/applicationContext*.xml</div><div class="line">        &lt;/param-value&gt;</div><div class="line">&lt;/context-param&gt;</div></pre></td></tr></table></figure>
+<p>XmlWebApplicationContext实例化完成后，调用AbstractApplicationContext#refresh()方法进行剩余工作的处理(template method)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">public void refresh() throws BeansException, IllegalStateException &#123;</div><div class="line">		synchronized (this.startupShutdownMonitor) &#123;</div><div class="line">			// Prepare this context for refreshing.</div><div class="line">			prepareRefresh();</div><div class="line"></div><div class="line">			// Tell the subclass to refresh the internal bean factory.</div><div class="line">			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();</div><div class="line"></div><div class="line">			// Prepare the bean factory for use in this context.</div><div class="line">			prepareBeanFactory(beanFactory);</div><div class="line"></div><div class="line">			try &#123;</div><div class="line">				// Allows post-processing of the bean factory in context subclasses.</div><div class="line">				postProcessBeanFactory(beanFactory);</div><div class="line"></div><div class="line">				// Invoke factory processors registered as beans in the context.</div><div class="line">				invokeBeanFactoryPostProcessors(beanFactory);</div><div class="line"></div><div class="line">				// Register bean processors that intercept bean creation.</div><div class="line">				registerBeanPostProcessors(beanFactory);</div><div class="line"></div><div class="line">				// Initialize message source for this context.</div><div class="line">				initMessageSource();</div><div class="line"></div><div class="line">				// Initialize event multicaster for this context.</div><div class="line">				initApplicationEventMulticaster();</div><div class="line"></div><div class="line">				// Initialize other special beans in specific context subclasses.</div><div class="line">				onRefresh();</div><div class="line"></div><div class="line">				// Check for listener beans and register them.</div><div class="line">				registerListeners();</div><div class="line"></div><div class="line">				// Instantiate all remaining (non-lazy-init) singletons.</div><div class="line">				finishBeanFactoryInitialization(beanFactory);</div><div class="line"></div><div class="line">				// Last step: publish corresponding event.</div><div class="line">				finishRefresh();</div><div class="line">			&#125;catch (BeansException ex) &#123;</div><div class="line">				logger.warn(&quot;Exception encountered during context initialization - cancelling refresh attempt&quot;, ex);</div><div class="line"></div><div class="line">				// Destroy already created singletons to avoid dangling resources.</div><div class="line">				destroyBeans();</div><div class="line"></div><div class="line">				// Reset &apos;active&apos; flag.</div><div class="line">				cancelRefresh(ex);</div><div class="line"></div><div class="line">				// Propagate exception to caller.</div><div class="line">				throw ex;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>在refresh（）里最后一行代码：finishRefresh()，在这里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">publishEvent(new ContextRefreshedEvent(this));</div></pre></td></tr></table></figure>
+<p>此事件的发布，会触发所有ApplicationListener监听器,从布引发DispatchServlet初始化自己的上下文(WebApplicationContext).看一DispatchServlet的结构：</p>
+<img [extend="?imageView2/2/w/600" src="http://oib3nhty8.bkt.clouddn.com/static/images/context_loader_listener_01.png">
+<p>DispatchServlet#initServletBean创建Servlet的ApplicationContext（XmlWebApplicationContext），并设定其Parent为ContextLoaderListener中创建的Root WebApplicationContext。而且Servlet的applicationContext“容器“中存放的Bean来自于spring-servlet.xml.</p>
+
       
     </div>
 
@@ -348,6 +403,16 @@
 
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+            <a href="/tags/applicationContext/" rel="tag"># applicationContext</a>
+          
+        </div>
       
 
       
@@ -409,8 +474,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -429,7 +503,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -438,7 +512,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -463,6 +537,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebApplicationContext是什么"><span class="nav-number">1.</span> <span class="nav-text">WebApplicationContext是什么</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
     </div>

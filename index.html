@@ -307,6 +307,35 @@
           </span>
 
           
+            <span class="post-category" >
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/context/" itemprop="url" rel="index">
+                    <span itemprop="name">context</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -333,9 +362,15 @@
 
       
         
-          
-            
-          
+          <p>Spring，Spring mvc做java web开发可能天天都会接触，但有些概念很多开发人员不太清楚，比如今天说的上下文：ContextLoaderListener有一个上下文，spring-servlet.xml也有一个上下文，它们一样吗，有什么不一样？今天详细来介绍一下。</p>
+<p>一个标准的Spring Web项目，会在web.xml中包含‘ContextLoadListener’和‘DispatcherServlet’。ContextLoaderListener用来加载与Web无关的Bean，DispatcherServlet是用来用加载Web相关的Bean（如Controller）。这样就会有两个Context：一个Parent（ContextLoaderListener创建的Root WebApplicationContext），一个Child（DispatcherServlet创建的 WebApplicationContext 其 parent为Root WebApplicationContext）。</p>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/01/02/Spring-ApplicationContext/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1128,7 +1163,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1137,7 +1172,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
