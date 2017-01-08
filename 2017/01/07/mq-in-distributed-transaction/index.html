@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java,transaction,mq," />
+  <meta name="keywords" content="java,mq,transaction," />
 
 
 
@@ -95,7 +95,7 @@
 在电商系统中，当有用户下单后，除了在订单表插入一条记录外，对应商品表的这个商量数量必须减一，怎么保证？用户参加活动下单记录保存后，也需要在活动系统中增加一个记录，如何保证？在搜索广告系统中，当用户点击某平巨型为后，除了在点击事件表中增加一条记录外，还得去商家账户表中找到这个商家并扣除平广告费，如何保证？等等，很多系统中都会有类似的情景。
 这些问题本质上都">
 <meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/2pc.png">
-<meta property="og:updated_time" content="2017-01-07T16:23:15.000Z">
+<meta property="og:updated_time" content="2017-01-08T14:47:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MQ in distributed transaction">
 <meta name="twitter:description" content="系统都微服务了，事务怎么办？，今天来说说。
@@ -393,7 +393,7 @@
 <ol>
 <li>我们应用程序（Client）发起一个开始请求到TC；</li>
 <li>TC先将<prepare>消息写到本地日志，之后向所有SI发起<prepare>消息。以支付宝为例：TC给A的prepare消息是是通知支付宝数据库相应账目扣款1W，TC给B的prepare消息是通知余额宝数据库相应账目增加1W。为什么在执行任务前需要先写本地日志，主要是为了故障后恢复用，本地日志起到现实生活中凭证的作用。如果没有本地日志（凭证），容易死无对证。（话说回来，日志如果也没有保存成功呢？）</prepare></prepare></li>
-<li>SI收到<prepare>后，执行暗送秋波的本机事务，但不会commit，如果成功返回：<yes>，不成功返回：<no>。同理，返回前要把返回的消息写到日志，当作凭证。</no></yes></prepare></li>
+<li>SI收到<prepare>后，执行具体的本机事务，但不会commit，如果成功返回：<yes>，不成功返回：<no>。同理，返回前要把返回的消息写到日志，当作凭证。</no></yes></prepare></li>
 <li>TC收集所有执行器返回的消息，如果所有执行器都返回<yes>，那么给所有执行器发送commit消息，执行器收到commit后执行本地过两天的commit操作；如果有任何一个执行器返回<no>，那么给所有执行器发送<abort>消息，执行器收到<abort>消息后执行事务的abort操作。</abort></abort></no></yes></li>
 </ol>
 <blockquote>
@@ -454,9 +454,9 @@
           
             <a href="/tags/java/" rel="tag"># java</a>
           
-            <a href="/tags/transaction/" rel="tag"># transaction</a>
-          
             <a href="/tags/mq/" rel="tag"># mq</a>
+          
+            <a href="/tags/transaction/" rel="tag"># transaction</a>
           
         </div>
       
