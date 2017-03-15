@@ -90,13 +90,14 @@
 <meta property="og:url" content="http://colinger.github.io/2017/03/13/distrituted-transaction-and-microservices/index.html">
 <meta property="og:site_name" content="Colingo的博客">
 <meta property="og:description" content="为了保证数据一致性，一般的解决方法是使用是：本地事务和分部式事务（2PC）。但是在微服务架构中数据都是服务私有的，需要通过服务提供的API来访问，故分布式事务不需适用与微服架构。那么微服务架构又该如何保证数据一致性呢？">
+<meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/process_db.png">
 <meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/problem01.png">
 <meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/problem02.png">
-<meta property="og:updated_time" content="2017-03-15T14:43:00.000Z">
+<meta property="og:updated_time" content="2017-03-15T14:58:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="distrituted transaction and microservices">
 <meta name="twitter:description" content="为了保证数据一致性，一般的解决方法是使用是：本地事务和分部式事务（2PC）。但是在微服务架构中数据都是服务私有的，需要通过服务提供的API来访问，故分布式事务不需适用与微服架构。那么微服务架构又该如何保证数据一致性呢？">
-<meta name="twitter:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/problem01.png">
+<meta name="twitter:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/process_db.png">
 
 
 
@@ -409,7 +410,7 @@
 <blockquote>
 <p>可靠事件模式<br>业务补偿模式<br>TCC 模式</p>
 </blockquote>
-<h3 id="可靠事件模式"><a href="#可靠事件模式" class="headerlink" title="可靠事件模式"></a>可靠事件模式</h3><p>可选事件模式属于事件驱动架构，当某件重要事情发生时，例如创建一个订单，微服会向消息代理发布一个事件。消息代理会向订阅事件的微服务推送事件，当订阅这些事件的微服务接收此事件时，就可以完成自己的业务，也可能会引发更多的事件发布。<br>1.如订单服务创建一个待支付的订单，发布一个“创建订单”的事件。<br>2.支付服务消费“创建订单”事件，支付完后发一个“支付完成”事件。<br>3.订单服务消费“支付完成”事件，订单状态更新为待出库<br>从而就实现了完整的业务流程。但这并一个完美的流程。<br>这个过程可能导致出现不一致的地方在于：某个微服务在更新了业务后发布事件却失败了；虽然微服务发布事件成功了，但消息代理未能正确推送事件到订单的微服务；接收事件的微服务重复消费了事件。<br>可靠事件模式在于_<em>保证可靠事件投递和避免重复消费</em>，可靠事件投递定义为：</p>
+<h3 id="可靠事件模式"><a href="#可靠事件模式" class="headerlink" title="可靠事件模式"></a>可靠事件模式</h3><p>可选事件模式属于事件驱动架构，当某件重要事情发生时，例如创建一个订单，微服会向消息代理发布一个事件。消息代理会向订阅事件的微服务推送事件，当订阅这些事件的微服务接收此事件时，就可以完成自己的业务，也可能会引发更多的事件发布。<br>1.如订单服务创建一个待支付的订单，发布一个“创建订单”的事件。<br>2.支付服务消费“创建订单”事件，支付完后发一个“支付完成”事件。<br>3.订单服务消费“支付完成”事件，订单状态更新为待出库<br>从而就实现了完整的业务流程。但这并一个完美的流程。<br><img [extend="?imageView2/2/w/600" src="http://oib3nhty8.bkt.clouddn.com/static/images/process_db.png"><br>这个过程可能导致出现不一致的地方在于：某个微服务在更新了业务后发布事件却失败了；虽然微服务发布事件成功了，但消息代理未能正确推送事件到订单的微服务；接收事件的微服务重复消费了事件。<br>可靠事件模式在于_<em>保证可靠事件投递和避免重复消费</em>，可靠事件投递定义为：</p>
 <blockquote>
 <ol>
 <li>每个服务原子性的业务操作和发布事件</li>
