@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/process_dm.png">
 <meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/problem01.png">
 <meta property="og:image" content="http://oib3nhty8.bkt.clouddn.com/static/images/problem02.png">
-<meta property="og:updated_time" content="2017-03-15T15:39:30.000Z">
+<meta property="og:updated_time" content="2017-03-16T02:22:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="distrituted transaction and microservices">
 <meta name="twitter:description" content="为了保证数据一致性，一般的解决方法是使用是：本地事务和分部式事务（2PC）。但是在微服务架构中数据都是服务私有的，需要通过服务提供的API来访问，故分布式事务不需适用与微服架构。那么微服务架构又该如何保证数据一致性呢？">
@@ -392,7 +392,7 @@
 <p>2PC介绍到此止！下来说正题，为什么分布式事务（2PC）不适合微服务。<br>首先，对于微服务架构来说，数据访问变得更加复杂，主要是因数据都是微服务私有的（理论上不会和你共享），唯一可以访问的的方式就是通过API。这种打包数据访问方式使得微服务之间松耦合，并且彼此之间独立，更容易进行性能扩展。<br>其次，不同的微服务经常使用不同的数据库。应用会产生各种不同类型的数据，关系型数据库并不一定是最佳选择。<br>基于微服和应用可能选反数据存储方式更灵活，如使用SQL与NoSQL结合的模式。非关系型数据库可能并不支持2PC。</p>
 <p>可见存微服务架构中不能够再使用分布式事务！</p>
 <h2 id="最终一致性原则"><a href="#最终一致性原则" class="headerlink" title="最终一致性原则"></a>最终一致性原则</h2><p>根据CAP理论，必须在可用性和一致性之间做出选择。如果选择一致性需要付出在满足一致性之前阻塞其他并发访问的代价。这可能持续一个不确定的时间，尤其是在系统中已表现出高延迟或者网络故障导致失去连接时。<br>依据目前成功的经验，可用性一般是更好的选择，但是在服务和数据库之间维护数据一致性是非常根本的需求，微服务架构中应该选择满足最终一致性。</p>
-<p>最终一致性是指系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。<br>当然选择了最终一致性，就要保证到最终的这段时间要在用户可接受的范围之内。那么我们怎么实现最终一致性呢？</p>
+<p>最终一致性是指系统中的所有数据副本经过一定时间后，最终能够达到一致的状态。<br>当然选择了最终一致性，<font color="red">就要保证到最终的这段时间要在用户可接受的范围之内</font>。那么我们怎么实现最终一致性呢？</p>
 <p>从一致性的本质来看，是要保证在一个业务逻辑中包含的服务要么都成功，要么都失败。那我们怎么选择方向呢？保证成功还是保证失败呢？<br>业务模式决定了我们的选择。实现最终一致性有三种模式：</p>
 <blockquote>
 <p>可靠事件模式<br>业务补偿模式<br>TCC 模式</p>
@@ -465,6 +465,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/03/18/API Design Guide/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -531,7 +535,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -539,7 +543,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -548,7 +552,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
