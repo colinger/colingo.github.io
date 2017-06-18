@@ -478,7 +478,7 @@
 <p><a href="http://en.wikipedia.org/wiki/Relational_algebra#Division" target="_blank" rel="external">http://en.wikipedia.org/wiki/Relational_algebra#Division</a></p>
 <p><a href="https://www.simple-talk.com/sql/t-sql-programming/divided-we-stand-the-sql-of-relational-division/" target="_blank" rel="external">https://www.simple-talk.com/sql/t-sql-programming/divided-we-stand-the-sql-of-relational-division/</a>。</p>
 <p>推荐阅读 →_→ <a href="http://blog.jobbole.com/40443/" target="_blank" rel="external">《画图解释SQL联合语句》</a></p>
-<p>我们学到了什么？</p>
+<p><strong>我们学到了什么？</strong></p>
 <font color="purple">学到了很多！让我们在脑海中再回想一下。 SQL 是对表的引用， JOIN 则是一种引用表的复杂方式。但是 SQL 语言的表达方式和实际我们所需要的逻辑关系之间是有区别的，并非所有的逻辑关系都能找到对应的 JOIN 操作，所以这就要我们在平时多积累和学习关系逻辑，这样你就能在以后编写 SQL 语句中选择适当的 JOIN 操作了。</font>
 
 <h4 id="7、-SQL-中如同变量的派生表"><a href="#7、-SQL-中如同变量的派生表" class="headerlink" title="7、 SQL 中如同变量的派生表"></a>7、 SQL 中如同变量的派生表</h4><p>在这之前，我们学习到过 SQL 是一种声明性的语言，并且 SQL 语句中不能包含变量。但是你能写出类似于变量的语句，这些就叫做派生表：</p>
@@ -491,7 +491,7 @@
 <p>需要我们注意的是：在有些数据库，以及 SQL ： 1990 标准中，派生表被归为下一级——通用表语句（ common table experssion）。这就允许你在一个 SELECT 语句中对派生表多次重用。上面的例子就（几乎）等价于下面的语句：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">WITH a AS (</div><div class="line">  <span class="keyword">SELECT</span> first_name, last_name, <span class="keyword">current_date</span> - date_of_birth age</div><div class="line">  <span class="keyword">FROM</span> author</div><div class="line">)</div><div class="line"><span class="keyword">SELECT</span> *</div><div class="line"><span class="keyword">FROM</span> a</div><div class="line"><span class="keyword">WHERE</span> age &gt; <span class="number">10000</span></div></pre></td></tr></table></figure>
 <p>当然了，你也可以给“ a ”创建一个单独的视图，这样你就可以在更广泛的范围内重用这个派生表了。更多信息可以阅读下面的文章（<a href="http://en.wikipedia.org/wiki/View_%28SQL%29" target="_blank" rel="external">http://en.wikipedia.org/wiki/View_%28SQL%29</a>）。</p>
-<p>我们学到了什么？</p>
+<p><strong>我们学到了什么？</strong></p>
 <font color="purple">我们反复强调，大体上来说 SQL 语句就是对表的引用，而并非对字段的引用。要好好利用这一点，不要害怕使用派生表或者其他更复杂的语句。</font>
 
 <h4 id="8、-SQL-语句中-GROUP-BY-是对表的引用进行的操作"><a href="#8、-SQL-语句中-GROUP-BY-是对表的引用进行的操作" class="headerlink" title="8、 SQL 语句中 GROUP BY 是对表的引用进行的操作"></a>8、 SQL 语句中 GROUP BY 是对表的引用进行的操作</h4><p>让我们再回想一下之前的 FROM 语句：</p>
@@ -506,7 +506,7 @@
 <ul>
 <li>还有一点值得留意的是： MySQL 并不坚持这个标准，这的确是令人很困惑的地方。<em>（译者注：这并不是说 MySQL 没有 GROUP BY 的功能）</em>但是不要被 MySQL 所迷惑。 GROUP BY 改变了对表引用的方式。你可以像这样既在 SELECT 中引用某一字段，也在 GROUP BY 中对其进行分组。</li>
 </ul>
-<p>我们学到了什么？</p>
+<p><strong>我们学到了什么？</strong></p>
 <font color="purple">GROUP BY，再次强调一次，是在表的引用上进行了操作，将其转换为一种新的引用方式。</font>
 
 <h4 id="9、-SQL-语句中的-SELECT-实质上是对关系的映射"><a href="#9、-SQL-语句中的-SELECT-实质上是对关系的映射" class="headerlink" title="9、 SQL 语句中的 SELECT 实质上是对关系的映射"></a>9、 SQL 语句中的 SELECT 实质上是对关系的映射</h4><p>我个人比较喜欢“映射”这个词，尤其是把它用在关系代数上。<em>（译者注：原文用词为 projection ，该词有两层含义，第一种含义是预测、规划、设计，第二种意思是投射、映射，经过反复推敲，我觉得这里用映射能够更直观的表达出 SELECT 的作用）</em>。一旦你建立起来了表的引用，经过修改、变形，你能够一步一步的将其映射到另一个模型中。 SELECT 语句就像一个“投影仪”，我们可以将其理解成一个将源表中的数据按照一定的逻辑转换成目标表数据的函数。</p>
@@ -527,7 +527,7 @@
 <li>如果直觉不能够说服你，那么语法肯定能。 SQL : 1999 标准引入了 GROUPING SETS，SQL： 2003 标准引入了 group sets : GROUP BY() 。无论什么时候，只要你的语句中出现了聚合函数，而且并没有明确的 GROUP BY 语句，这时一个不明确的、空的 GROUPING SET 就会被应用到这段 SQL 中。因此，原始的逻辑顺序的规则就被打破了，映射（即 SELECT ）关系首先会影响到逻辑关系，其次就是语法关系。<em>（译者注：这段话原文就比较艰涩，可以简单理解如下：在既有聚合函数又有普通函数的 SQL 语句中，如果没有 GROUP BY 进行分组，SQL 语句默认视整张表为一个分组，当聚合函数对某一字段进行聚合统计的时候，引用的表中的每一条 record 就失去了意义，全部的数据都聚合为一个统计值，你此时对每一条 record 使用其它函数是没有意义的）</em>。</li>
 </ol>
 <p>糊涂了？是的，我也是。我们再回过头来看点浅显的东西吧。</p>
-<p>我们学到了什么？</p>
+<p><strong>我们学到了什么？</strong></p>
 <font color="purple">SELECT 语句可能是 SQL 语句中最难的部分了，尽管他看上去很简单。其他语句的作用其实就是对表的不同形式的引用。而 SELECT 语句则把这些引用整合在了一起，通过逻辑规则将源表映射到目标表，而且这个过程是可逆的，我们可以清楚的知道目标表的数据是怎么来的。</font>
 
 <p>想要学习好 SQL 语言，就要在使用 SELECT 语句之前弄懂其他的语句，虽然 SELECT 是语法结构中的第一个关键词，但它应该是我们最后一个掌握的。</p>
@@ -552,6 +552,7 @@
 <p>让我们在工作中尽情的使用 SQL！</p>
 <p>正如其他语言一样，想要学好 SQL 语言就要大量的练习。上面的 10 个简单的步骤能够帮助你对你每天所写的 SQL 语句有更好的理解。另一方面来讲，从平时常见的错误中也能积累到很多经验。下面的两篇文章就是介绍一些 JAVA 和其他开发者所犯的一些常见的 SQL 错误：</p>
 <p><a href="http://blog.jooq.org/2013/07/30/10-common-mistakes-java-developers-make-when-writing-sql/" target="_blank" rel="external">10 Common Mistakes Java Developers Make when Writing SQL</a><br><a href="http://blog.jooq.org/2013/08/12/10-more-common-mistakes-java-developers-make-when-writing-sql/" target="_blank" rel="external">10 More Common Mistakes Java Developers Make when Writing SQL</a></p>
+<p>注：本文整理自 <a href="http://blog.jobbole.com/55086/" target="_blank" rel="external">十步完全理解 SQL</a></p>
 
           
         
