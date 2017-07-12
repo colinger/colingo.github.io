@@ -94,7 +94,7 @@
 <meta property="og:description" content="10个简单步骤，完全理解SQL1、 SQL 是一种声明式语言首先要把这个概念记在脑中：“声明”。 SQL 语言是为计算机声明了一个你想从原始数据中获得什么样的结果的一个范例，而不是告诉计算机如何能够得到结果。这是不是很棒？
 （译者注：简单地说，SQL 语言声明的是结果集的属性，计算机会根据 SQL 所声明的内容来从数据库中挑选出符合声明的数据，而不是像传统编程思维去指示计算机如何操作。）
 1SEL">
-<meta property="og:updated_time" content="2017-06-18T22:50:40.000Z">
+<meta property="og:updated_time" content="2017-07-12T14:08:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fully understanding sql">
 <meta name="twitter:description" content="10个简单步骤，完全理解SQL1、 SQL 是一种声明式语言首先要把这个概念记在脑中：“声明”。 SQL 语言是为计算机声明了一个你想从原始数据中获得什么样的结果的一个范例，而不是告诉计算机如何能够得到结果。这是不是很棒？
@@ -360,7 +360,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">SELECT</span> first_name, last_name <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> salary &gt; <span class="number">100000</span></div></pre></td></tr></table></figure>
 <p>上面的例子很容易理解，我们不关心这些雇员记录从哪里来，我们所需要的只是那些高薪者的数据.</p>
 <p>我们从哪儿学习到这些？</p>
-<p>如果 SQL 语言这么简单，那么是什么让人们“闻SQL色变”？主要的原因是：<font color="red">我们潜意识中的是按照命令式编程的思维方式思考问题的</font>。就好像这样：“电脑，先执行这一步，再执行那一步，但是在那之前先检查一下是否满足条件 A 和条件 B ”。例如，用变量传参、使用循环语句、迭代、调用函数等等，都是这种命令式编程的思维惯式。</p>
+<p>如果 SQL 语言这么简单，那么是什么让人们“闻SQL色变”？主要的原因是：<font color="red">我们潜意识中的是按照命令式编程的思维方式思考问题的</font>。就好像这样：“电脑，先执行这一步，再执行那一步，但是在那之前先检查一下是否满足条件 A 和条件 B ”。例如，用变量传参、使用循环语句、迭代、调用函数等等，都是这种命令式编程的思维惯式。<br><a id="more"></a></p>
 <h4 id="2、-SQL-的语法并不按照语法顺序执行"><a href="#2、-SQL-的语法并不按照语法顺序执行" class="headerlink" title="2、 SQL 的语法并不按照语法顺序执行"></a>2、 SQL 的语法并不按照语法顺序执行</h4><p>SQL 语句有一个让大部分人都感到困惑的特性，就是：SQL 语句的执行顺序跟其语句的语法顺序并不一致。SQL 语句的语法顺序是：</p>
 <ul>
 <li>SELECT[DISTINCT]</li>
