@@ -94,7 +94,7 @@ Rc和Arc">
 <meta property="og:description" content="ReferenceOwnership关键字：Move，Stack Frame,  HeapIndexed ContentCopy
 Rc Arc：shared ownership一般情况下，大多数的Value都一个唯一的Owner，但是有些场景可能会有多个。你期望这个Value一直存活着直接所有人都使用过它（在所有没有使用它之前，你希望它一直存活）。在这种场景的需求下，Rust提供了：
 Rc和Arc">
-<meta property="og:updated_time" content="2017-12-12T05:37:18.000Z">
+<meta property="og:updated_time" content="2018-02-24T09:12:55.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rust">
 <meta name="twitter:description" content="ReferenceOwnership关键字：Move，Stack Frame,  HeapIndexed ContentCopy
@@ -372,11 +372,8 @@ Rc和Arc">
 <p>Arc主要用于多线程的场景（多个线程共享是案例的），除此之外其他用法都一样。如果在没有线程的需求，只用Rc就可以了（性能更高）</p>
 <p>注:</p>
 <blockquote>
-<p>Rc: reference count<br>Arc: atomic reference count<br>Rust比较牛的是，如果你将Rc用到多线中去，编译是不通过的。<br>Rc的指针是不是immutable</p>
-</blockquote>
-<h3 id="Trait"><a href="#Trait" class="headerlink" title="Trait"></a>Trait</h3><p>a trait must be in scope in order to use its methods</p>
-<blockquote>
-<p>如果想使用trait，必须在当前的scope内. </p>
+<p>Rc: reference count<br>Arc: atomic reference count<br>Rust比较牛的是，如果你将Rc用到多线中去，编译是不通过的。<br>Rc的指针是不是immutable<br><a id="more"></a></p>
+<h3 id="Trait"><a href="#Trait" class="headerlink" title="Trait"></a>Trait</h3><p>a trait must be in scope in order to use its methods<br>如果想使用trait，必须在当前的scope内. </p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">use std::str::FromStr</div><div class="line"></div><div class="line">fn parse_pair&lt;T: FromStr&gt;() -&gt; Option&lt;(T,T)&gt; &#123;</div><div class="line">	...</div><div class="line">	match (T::from_str(&amp;str[...]), T::from_str(&amp;str[..]))&#123;</div><div class="line">		....</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
@@ -443,8 +440,8 @@ Rc和Arc">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/18/fully-understanding-sql/" rel="next" title="fully understanding sql">
-                <i class="fa fa-chevron-left"></i> fully understanding sql
+              <a href="/2017/06/18/API Design Guide/" rel="next" title="API 设计指南">
+                <i class="fa fa-chevron-left"></i> API 设计指南
               </a>
             
           </div>

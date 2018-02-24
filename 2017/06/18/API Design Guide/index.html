@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="Colingo的博客">
 <meta property="og:description" content="概要此设计指导主要针对网络API。Google从2014年开始使用延用至今，在设计Cloud APIs及其他Google APIs时都以此为指导。
 这份指南可以应用于REST APIs和RPC APIs，主要针对于gRPC APIs。gRPC APIs使用Protocol Buffers定义它们的API外观，API Service Configuration配置它们API Service， 包括H">
-<meta property="og:updated_time" content="2017-07-12T14:25:21.000Z">
+<meta property="og:updated_time" content="2018-02-24T09:12:25.961Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="API 设计指南">
 <meta name="twitter:description" content="概要此设计指导主要针对网络API。Google从2014年开始使用延用至今，在设计Cloud APIs及其他Google APIs时都以此为指导。
@@ -353,7 +353,7 @@
 
       
         <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>此设计指导主要针对网络API。Google从2014年开始使用延用至今，在设计<a href="https://cloud.google.com/apis/docs/overview" target="_blank" rel="external">Cloud APIs</a>及其他<a href="https://github.com/googleapis/googleapis" target="_blank" rel="external">Google APIs</a>时都以此为指导。</p>
-<p>这份指南可以应用于REST APIs和RPC APIs，主要针对于gRPC APIs。gRPC APIs使用<a href="">Protocol Buffers</a>定义它们的API外观，<a href="">API Service Configuration</a>配置它们API Service， 包括HTTP映射，日志和监控。HTTP映射特性，是使用Google APIs和Cloud Endpoints gPRC APIs，从JSON/HTTP 到 Buffers/RPC协议的转换。</p>
+<p>这份指南可以应用于REST APIs和RPC APIs，主要针对于gRPC APIs。gRPC APIs使用<a href="">Protocol Buffers</a>定义它们的API外观，<a href="">API Service Configuration</a>配置它们API Service， 包括HTTP映射，日志和监控。HTTP映射特性，是使用Google APIs和Cloud Endpoints gPRC APIs，从JSON/HTTP 到 Buffers/RPC协议的转换。<br><a id="more"></a></p>
 <h2 id="面向资源的设计"><a href="#面向资源的设计" class="headerlink" title="面向资源的设计"></a>面向资源的设计</h2><p>本指南的目标是帮助开发者设计出简介、一致且好用的网络API 。与此同时，此指南也有助于统一基于socket 的RPC API和基于HTTP 的REST API 的设计。</p>
 <p>长久以来，人们通过API接口和方法，如CORBA 和Windows COM 来设计RPC API。随着时间流逝，越来越多的接口和方法被引入。最终的结果将是数目惊人且各不相同的接口和方法。为了正确的使用它们，开发者不得不得进行仔细的学习，这不仅耗时而且易错。</p>
 <p>REST风格体系最早在2000年被提出，并被设计为配合HTTP/1.1工作。REST的核心原则是定义可被少许方法进行操作的命名资源。这些资源和方法被称为API 的名词 (nouns) 和动词 (verb)。在HTTP协议下，资源名很自然地被映射到URL上而方法则映射到HTTP方法POST GET PUT PATCH 和 DELETE上。</p>
@@ -430,8 +430,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/13/distrituted-transaction-and-microservices/" rel="next" title="distrituted transaction and microservices">
-                <i class="fa fa-chevron-left"></i> distrituted transaction and microservices
+              <a href="/2017/06/18/fully-understanding-sql/" rel="next" title="fully understanding sql">
+                <i class="fa fa-chevron-left"></i> fully understanding sql
               </a>
             
           </div>
@@ -440,8 +440,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/18/fully-understanding-sql/" rel="prev" title="fully understanding sql">
-                fully understanding sql <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/12/rust-01/" rel="prev" title="Rust">
+                Rust <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

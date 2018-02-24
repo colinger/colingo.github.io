@@ -96,7 +96,7 @@
 
 强领导者(Strong Leader): Raft使用一种比其他算法更强的形式。如， 日志条目只从领导者发送向其他服务器。这样就简化了对日志复制的管理，使用得Raft更易于理解。
 领导选取(Leader Selection)：Raft使用用随机定时器来选取领导者。这种方式仅仅是在所有算法都需要实现的的心跳机制上">
-<meta property="og:updated_time" content="2018-01-12T13:10:29.000Z">
+<meta property="og:updated_time" content="2018-02-24T09:12:39.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RAFT一致性算法">
 <meta name="twitter:description" content="引言Raft算法和现在一些已经有的算法有一些地方很相似。但是Raft有几个新的特性：
@@ -362,9 +362,10 @@
 <ul>
 <li>强领导者(Strong Leader): Raft使用一种比其他算法更强的形式。如， 日志条目只从领导者发送向其他服务器。这样就简化了对日志复制的管理，使用得Raft更易于理解。</li>
 <li>领导选取(Leader Selection)：Raft使用用随机定时器来选取领导者。这种方式仅仅是在所有算法都需要实现的的心跳机制上增加了一点变化，它使得在解决冲突时更简单和快速。</li>
-<li>成员变化(Membership Change)：Raft为了调整集群中成员关系使用了新的联合一致性的方法，这种方法中大多数不同配置的机器在转换关系的时候会交迭。这使得在配置改变的时候，集群能够继续操作。</li>
+<li>成员变化(Membership Change)：Raft为了调整集群中成员关系使用了新的联合一致性的方法，这种方法中大多数不同配置的机器在转换关系的时候会交迭。这使得在配置改变的时候，集群能够继续操作。<a id="more"></a>
+<h4 id="复制状态机"><a href="#复制状态机" class="headerlink" title="复制状态机"></a>复制状态机</h4></li>
 </ul>
-<h4 id="复制状态机"><a href="#复制状态机" class="headerlink" title="复制状态机"></a>复制状态机</h4>
+
       
     </div>
 
