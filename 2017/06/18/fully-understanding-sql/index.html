@@ -94,7 +94,7 @@
 <meta property="og:description" content="10个简单步骤，完全理解SQL1、 SQL 是一种声明式语言首先要把这个概念记在脑中：“声明”。 SQL 语言是为计算机声明了一个你想从原始数据中获得什么样的结果的一个范例，而不是告诉计算机如何能够得到结果。这是不是很棒？
 （译者注：简单地说，SQL 语言声明的是结果集的属性，计算机会根据 SQL 所声明的内容来从数据库中挑选出符合声明的数据，而不是像传统编程思维去指示计算机如何操作。）
 1SEL">
-<meta property="og:updated_time" content="2017-07-12T14:08:32.000Z">
+<meta property="og:updated_time" content="2018-02-24T08:15:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fully understanding sql">
 <meta name="twitter:description" content="10个简单步骤，完全理解SQL1、 SQL 是一种声明式语言首先要把这个概念记在脑中：“声明”。 SQL 语言是为计算机声明了一个你想从原始数据中获得什么样的结果的一个范例，而不是告诉计算机如何能够得到结果。这是不是很棒？
@@ -400,7 +400,7 @@
 <p>FROM 语句的“输出”是一张联合表，来自于所有引用的表在某一维度上的联合。我们们慢慢来分析：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FROM a, b</div></pre></td></tr></table></figure>
 <p>上面这句 FROM 语句的输出是一张联合表，联合了表 a 和表 b 。如果 a 表有三个字段， b 表有 5 个字段，那么这个“输出表”就有 8 （ =5+3）个字段。</p>
-<p>这个联合表里的数据是 a<em>b，即 a 和 b 的笛卡尔积。换句话说，也就是 a 表中的每一条数据都要跟 b 表中的每一条数据配对。如果 a 表有3 条数据， b 表有 5 条数据，那么联合表就会有 15 （ =5</em>3）条数据。</p>
+<p>这个联合表里的数据是 a*b，即 a 和 b 的笛卡尔积。换句话说，也就是 a 表中的每一条数据都要跟 b 表中的每一条数据配对。如果 a 表有3 条数据， b 表有 5 条数据，那么联合表就会有 15 （ = 5x3）条数据。</p>
 <p>FROM 输出的结果被 WHERE 语句筛选后要经过 GROUP BY 语句处理，从而形成新的输出结果。我们后面还会再讨论这方面问题。</p>
 <p>如果我们从集合论（关系代数）的角度来看，一张数据库的表就是一组数据元的关系，而每个 SQL 语句会改变一种或数种关系，从而产生出新的数据元的关系（即产生新的表）。</p>
 <p><strong>我们学到了什么？</strong></p>
@@ -555,6 +555,8 @@
 <p>让我们在工作中尽情的使用 SQL！</p>
 <p>正如其他语言一样，想要学好 SQL 语言就要大量的练习。上面的 10 个简单的步骤能够帮助你对你每天所写的 SQL 语句有更好的理解。另一方面来讲，从平时常见的错误中也能积累到很多经验。下面的两篇文章就是介绍一些 JAVA 和其他开发者所犯的一些常见的 SQL 错误：</p>
 <p><a href="http://blog.jooq.org/2013/07/30/10-common-mistakes-java-developers-make-when-writing-sql/" target="_blank" rel="external">10 Common Mistakes Java Developers Make when Writing SQL</a><br><a href="http://blog.jooq.org/2013/08/12/10-more-common-mistakes-java-developers-make-when-writing-sql/" target="_blank" rel="external">10 More Common Mistakes Java Developers Make when Writing SQL</a></p>
+<p>SQL的执行顺序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Order</div><div class="line">(7)     SELECT (8)     DISTINCT &lt;select_list&gt;(1)     FROM &lt;left_table&gt;(3)     &lt;join_type&gt; JOIN &lt;right_table&gt;(2)     ON &lt;join_condition&gt;(4)     WHERE &lt;where_condition&gt;(5)     GROUP BY &lt;group_by_list&gt;(6)     HAVING &lt;having_condition&gt;(9)     ORDER BY &lt;order_by_condition&gt;(10)    LIMIT &lt;limit_number&gt;[, &lt;offset_number&gt;]</div></pre></td></tr></table></figure>
 <p>注：本文整理自 <a href="http://blog.jobbole.com/55086/" target="_blank" rel="external">十步完全理解 SQL</a></p>
 
       
@@ -588,8 +590,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/13/distrituted-transaction-and-microservices/" rel="next" title="distrituted transaction and microservices">
-                <i class="fa fa-chevron-left"></i> distrituted transaction and microservices
+              <a href="/2017/06/18/API Design Guide/" rel="next" title="API 设计指南">
+                <i class="fa fa-chevron-left"></i> API 设计指南
               </a>
             
           </div>
@@ -598,8 +600,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/18/API Design Guide/" rel="prev" title="API 设计指南">
-                API 设计指南 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/12/rust-01/" rel="prev" title="Rust">
+                Rust <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -668,7 +670,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -676,7 +678,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -685,7 +687,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -741,7 +743,7 @@
         <div class="copyright" >
   
   &copy;  2016 - 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
